@@ -498,7 +498,7 @@ module ActiveMerchant
         xml = REXML::Document.new(response)
         root_node = xml.elements['TrackResponse']
 
-        success = response_success?(xml)
+        success = root_node && response_success?(xml)
         message = response_message(xml)
 
         if success
@@ -546,10 +546,11 @@ module ActiveMerchant
             return node
           end
         end
+        nil
       end
 
       def response_status_node(document)
-         track_summary_node(document) || error_description_node(document)
+        track_summary_node(document) || error_description_node(document)
       end
 
       def has_error?(document)
@@ -577,7 +578,11 @@ module ActiveMerchant
 
       def response_message(document)
         response_node = response_status_node(document)
-        response_node.get_text.to_s
+        if response_node
+          response_node.get_text.to_s
+        else
+          ''
+        end
       end
 
       def commit(action, request, test = false)
