@@ -18,6 +18,11 @@ class USPSTest < Test::Unit::TestCase
     end
   end
 
+  def test_error_description_node_should_return_nil_with_invalid_xml
+    xml = REXML::Document.new(xml_fixture('usps/invalid_xml_response'))
+    assert_equal @carrier.send(:error_description_node, xml), nil
+  end
+
   def test_find_tracking_info_should_handle_not_found_error
     @carrier.expects(:commit).returns(xml_fixture('usps/tracking_response_test_error'))
     assert_raises ResponseError do
