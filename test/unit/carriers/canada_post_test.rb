@@ -17,11 +17,7 @@ class CanadaPostTest < Test::Unit::TestCase
     @destination = {:city => "Beverly Hills", :state => "CA", :country => "United States", :postal_code => "90210"}
     @line_items  = [Package.new(500, [2, 3, 4], :description => "a box full of stuff", :value => 2500)]
   end
-  
-  def test_parse_rate_response_french
-    assert_equal @request, @french_carrier.build_rate_request(@origin, @destination, 24, @line_items)
-  end
-  
+
   def test_parse_rate_response_french
     @french_carrier.expects(:ssl_post).returns(@response_french)
     rate_estimates = @french_carrier.find_rates(@origin, @destination, @line_items)

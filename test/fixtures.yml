@@ -1,5 +1,8 @@
 usps:
   login: APIKey
+usps_returns:
+  mid: MID
+  merchant_account_id: MerchantAccountId
 ups:
   key: XmlAccessKey
   login: UPSDotComLogin
