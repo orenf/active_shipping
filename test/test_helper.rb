@@ -11,6 +11,8 @@ require 'mocha/setup'
 require 'timecop'
 require 'nokogiri'
 
+I18n.config.enforce_available_locales = true
+
 XmlNode # trigger autorequire
 
 module MiniTest
