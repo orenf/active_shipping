@@ -84,6 +84,7 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Sent by the system containing the returns label attachment and message.
       def recipient_bcc=(v)
         @recipient_bcc = nil
         if (v = sanitize(v)) && v =~ USPS_EMAIL_REGEX
@@ -93,6 +94,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Sent by the system containing the returns label attachment and message.
+      # <em>Optional</em>.
       def recipient_email=(v)
         @recipient_email = nil
         if (v = sanitize(v)) && v =~ USPS_EMAIL_REGEX
@@ -102,6 +105,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # The name in an email sent by the system containing the returns label attachment.
+      # <em>Optional</em>.
       def recipient_name=(v)
         @recipient_name = nil
         if (v = sanitize(v)) && v.length > 0
@@ -111,6 +116,10 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # The From address in an email sent by the system containing the returns
+      # label attachment and message, Defaults to DONOTREPLY@USPSReturns.com
+      # if a recipient email is entered and a sender email is not.
+      # <em>Optional</em>.
       def sender_email=(v)
         @sender_email = nil
         if (v = sanitize(v)) && v =~ USPS_EMAIL_REGEX
@@ -120,6 +129,10 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # The From name in an email sent by the system containing the returns
+      # label attachment.  Defaults to “Merchant Returns” if a recipient name
+      # is entered and a sender name is not.
+      # <em>Optional</em>.
       def sender_name=(v)
         @sender_name = nil
         if (v = sanitize(v)) && v.length > 0
@@ -131,11 +144,16 @@ module ActiveMerchant #:nodoc:
 
       # Used to override the validation of the customer address.
       # If true, the address will be validated against WebTools.
-      # If false, the system will bypass the validation
+      # If false, the system will bypass the validation.
+      # <em>Optional</em>.
       def address_validation=(v)
         @address_validation = to_bool(v, true)
       end
 
+      # Used to select the format of the return label.
+      # <em>Optional</em>.
+      # * PDF <em>Default</em>.
+      # * TIF
       def image_type=(v)
         @image_type = nil
         v = v.to_s.upcase
@@ -146,6 +164,11 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Used to determine if the returns label request is coming from a
+      # merchant call center agent or an end customer.
+      # <b>Required</b>.
+      # [CallCenter]
+      # [Customer]
       def call_center_or_self_service=(v)
         @call_center_or_self_service = nil
         if CALL_CENTER_OR_SELF_SERVICE.include?(v)
@@ -155,6 +178,10 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Package information can be one of three types: RMA, Invoice or
+      # Order number. This will appear on the second label generated when
+      # the LabelFormat “TWO” is selected.
+      # <em>Optional</em>.
       def packaging_information2=(v)
         @packaging_information2 = nil
         if (v = sanitize(v)) && v.size <= 15
@@ -164,7 +191,9 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # Value of package information
+      # Package information can be one of three types: RMA, Invoice or
+      # Order number. This will appear on the generated label.
+      # <em>Optional</em>.
       def packaging_information=(v)
         @packaging_information = nil
         if (v = sanitize(v)) && v.size <= 15
@@ -179,12 +208,13 @@ module ActiveMerchant #:nodoc:
       # the address_override_notification value is
       # true then any address error being passed from
       # WebTools would be bypassed and a successful
-      # response will be sent
+      # response will be sent.
+      # <b>Required</b>.
       def address_override_notification=(v)
         @address_validation = to_bool(v)
       end
 
-      # Insured amount of package
+      # Insured amount of package.
       def insurance_amount=(v)
         @insurance_amount = nil
         if (1..200).include?(v.to_f)
@@ -194,6 +224,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Description of the merchandise.
+      # <em>Optional</em>.
       def merchandise_description=(v)
         @merchandise_description = nil
         if (v = sanitize(v)) && v.length <= 255
@@ -203,6 +235,17 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Service type of the label as specified in the merchant profile setup.
+      # <b>Required</b>.
+      # [044] (Parcel Return Service)
+      # [019] (Priority Mail Returns service)
+      # [596] (Priority Mail Returns service, Insurance <= $200)
+      # [020] (First-Class Package Return service)
+      # [597] (First-Class Package Return service, Insurance <= $200)
+      # [022] (Ground Return Service)
+      # [024] (PRS – Full Network)
+      # [017] (PRS – Full Network, Insurance <=$200)
+      # [018] (PRS – Full Network, Insurance >$200)
       def service_type_code=(v)
         @service_type_code = nil
         if SERVICE_TYPE_CODE.include?(v)
@@ -212,6 +255,12 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # Size of the label.
+      # <b>Required</b>.
+      # * 4X6
+      # * Zebra-4X6
+      # * 4X4
+      # * 3X6
       def label_definition=(v)
         @label_definition = nil
         if LABEL_DEFINITION.include?(v)
@@ -225,6 +274,10 @@ module ActiveMerchant #:nodoc:
         @label_format && LABEL_FORMAT[@label_format]
       end
 
+      # Format in which the label(s) will be printed.
+      # * null (“Instructions”)
+      # * NOI (“No Instructions”)
+      # * TWO (“Double Label”)
       def label_format=(v)
         @label_format = nil
         if LABEL_FORMAT.keys.include?(v)
@@ -234,7 +287,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # The intended recipient of the returned package (e.g. Returns Department)
+      # The intended recipient of the returned package (e.g. Returns Department).
+      # <em>Optional</em>.
       def attention=(v)
         @attention = nil
         if (v = sanitize(v)) && v.length <= 38
@@ -244,6 +298,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # The name of the company to which the package is being returned.
+      # <em>Optional</em>.
       def company_name=(v)
         @company_name = nil
         if (v = sanitize(v)) && v.length <= 38
@@ -253,6 +309,7 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # <b>Required</b>.
       def merchant_account_id=(v)
         @merchant_account_id = nil
         if v.to_i > 0
@@ -262,6 +319,7 @@ module ActiveMerchant #:nodoc:
         end
       end
 
+      # <b>Required</b>.
       def mid=(v)
         @mid = nil
         if v =~ /^\d{6,9}$/
@@ -271,7 +329,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # Only applicable to Puerto Rico addresses
+      # Urbanization of customer returning the package (only applicable to Puerto Rico addresses).
+      # <em>Optional</em>.
       def customer_urbanization=(v)
         @customer_urbanization = nil
         if (v = sanitize(v)) && v.length <= 32
@@ -281,7 +340,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # Name of returning the package
+      # Name of customer returning package.
+      # <b>Required</b>.
       def customer_name=(v)
         @customer_name = nil
         if (v = sanitize(v)) && (1..32).include?(v.length)
@@ -291,7 +351,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # Address of the customer returning the package
+      # Address of the customer returning the package.
+      # <b>Required</b>.
       def customer_address1=(v)
         @customer_address1 = nil
         if (v = sanitize(v)) && (1..32).include?(v.length)
@@ -301,7 +362,9 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # Apt or suite number
+      # Secondary address unit designator / number of customer
+      # returning the package. (such as an apartment or
+      # suite number, e.g. APT 202, STE 100)
       def customer_address2=(v)
         @customer_address2 = nil
         if (v = sanitize(v).to_s) && (0..32).include?(v.length)
@@ -315,7 +378,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # City of customer returning the package
+      # City of customer returning the package.
+      # <b>Required</b>.
       def customer_city=(v)
         @customer_city = nil
         if (v = sanitize(v)) && (1..32).include?(v.length)
@@ -325,7 +389,8 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # State of customer returning the package
+      # State of customer returning the package.
+      # <b>Required</b>.
       def customer_state=(v)
         @customer_state = nil
         if (v = sanitize(v)) && v =~ /^[a-zA-Z]{2}$/
@@ -335,7 +400,12 @@ module ActiveMerchant #:nodoc:
         end
       end
 
-      # Zipcode of customer returning the package
+      # Zipcode of customer returning the package.
+      # According to the USPS documentation, Zipcode is optional
+      # unless <tt>address_override_notification</tt> is true
+      # and <tt>address_validation</tt> is set to false.
+      # It's probably just easier to require Zipcodes.
+      # <b>Required</b>.
       def customer_zipcode=(v)
         @customer_zipcode = nil
         if (v = sanitize(v))
