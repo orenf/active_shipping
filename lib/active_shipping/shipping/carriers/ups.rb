@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 module ActiveMerchant
   module Shipping
     class UPS < Carrier
@@ -15,6 +13,7 @@ module ActiveMerchant
       RESOURCES = {
         :rates => 'ups.app/xml/Rate',
         :track => 'ups.app/xml/Track'
+        :shipment => 'ups.app/xml/Shipment'
       }
 
       PICKUP_CODES = HashWithIndifferentAccess.new({
