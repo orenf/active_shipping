@@ -1,4 +1,4 @@
-# ActiveShipping [![Build status](https://travis-ci.org/Shopify/active_shipping.svg?branch=master)](https://travis-ci.org/Shopify/active_shipping)
+# ActiveShipping [![Build Status](https://travis-ci.org/orenf/active_shipping.svg?branch=master)](https://travis-ci.org/orenf/active_shipping)
 
 This library interfaces with the web services of various shipping carriers. The goal is to abstract the features that are most frequently used into a pleasant and consistent Ruby API.
 
